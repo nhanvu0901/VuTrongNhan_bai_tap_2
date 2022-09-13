@@ -6,7 +6,7 @@ from datetime import datetime
 class Product(models.Model):
     _inherit = 'product.template'
 
-    product_warranty = fields.Text(string='Product Warranty Code', readonly=True)
+    product_warranty = fields.Text(string='Product Warranty Code')
     Date_to = fields.Date(string='Date Start Warranty')
     Date_from = fields.Date(string='Date Stop Warranty')
 

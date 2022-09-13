@@ -1,1 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_test2_advance_sale,test2.advance_sale,model_test2_advance_sale,base.group_user,1,1,1,1

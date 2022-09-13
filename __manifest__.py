@@ -24,7 +24,9 @@
 
     # always loaded
     'data': [
+        'security/security_group.xml',
         'views/product.xml',
+
 
     ],
     # only loaded in demonstration mode
