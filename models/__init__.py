@@ -1,3 +1,3 @@
 
 
-from . import Product , AdvanceSale
+from . import Product , AdvanceSale,ProductSale

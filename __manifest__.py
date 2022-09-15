@@ -20,12 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'product'],
+    'depends': ['base', 'product','sale'],
 
     # always loaded
     'data': [
         'security/security_group.xml',
         'views/product.xml',
+        'views/productSale.xml',
 
 
     ],
