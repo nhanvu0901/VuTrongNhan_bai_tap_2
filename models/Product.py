@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from datetime import datetime
+
+from datetime import date, datetime
 
 
 class Product(models.Model):
@@ -25,7 +26,7 @@ class Product(models.Model):
                 else:
                     rec.product_warranty = "PWR" + "/" + date_to + "/0"
 
-        else:#date_to = ''
+        else:  # date_to = ''
             if self.Date_from and not self.Date_from == '':
                 year_date_from = self.Date_from.strftime("%Y")
                 date_from_day_month = self.Date_from.strftime("%m%d")
@@ -33,7 +34,6 @@ class Product(models.Model):
                 self.product_warranty = "PWR" + "/0/" + date_from
             else:
                 self.product_warranty = "PWR" + "0/0"
-
 
     @api.onchange("Date_from")
     def onchange_date_from_code(self):
@@ -59,4 +59,13 @@ class Product(models.Model):
             else:
                 self.product_warranty = "PWR" + "0/0"
 
-
+    def _display_product_discount_code(self):
+        today = fields.Date.today()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Product',
+            'res_model': 'product.template',
+            'domain': [('Date_to', '<=', today),('Date_from', '>=', today) ],
+            'view_mode': 'tree,form',
+            'target': 'current',
+        }

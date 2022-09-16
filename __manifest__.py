@@ -27,6 +27,7 @@
         'security/security_group.xml',
         'views/product.xml',
         'views/productSale.xml',
+        'views/product_warranty_code.xml',
 
 
     ],

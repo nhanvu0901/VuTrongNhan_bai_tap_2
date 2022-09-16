@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="test2_product_action" model="ir.actions.server">
+                <field name="name">Product discount code</field>
+                <field name="model_id" ref="model_product_template"/>
+
+                <field name="state">code</field>
+                <field name="code">
+                    action = model._display_product_discount_code()
+                </field>
+    </record>
+
+   <menuitem name="Product Discount Code" id="Product_discount_code_root" parent="menu_root" action="test2_product_action"/>
+
+</odoo>
