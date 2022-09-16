@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<odoo>
+        <record id="view_create_customer_form" model="ir.ui.view">
+            <field name="name">mass.update.wizard.form</field>
+            <field name="model">mass.update.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Product Code">
+                    <group class="oe_title">
+                        <field name="product_warranty" groups="test2.group_adavance_sale"/>
+                         <field name="Date_to" groups="test2.group_adavance_sale"/>
+                         <field name="Date_from" groups="test2.group_adavance_sale"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm" string="Create" type="object" icon="gtk-apply" class="btn-primary"/><!-- phai co object thi moi viet funtion cho button dc-->
+
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_create_product_code" model="ir.actions.act_window">
+            <field name="name">Mass Update</field>
+            <field name="type">ir.actions.act_window</field>
+
+            <field name="res_model">mass.update.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_create_customer_form"/>
+            <field name="target">new</field>
+        </record>
+
+</odoo>

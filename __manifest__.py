@@ -16,7 +16,7 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
+    'category': 'test2',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
@@ -24,10 +24,13 @@
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
+        'security/security_group.xml',
         'security/security_group.xml',
         'views/product.xml',
         'views/productSale.xml',
         'views/product_warranty_code.xml',
+        'wizard/mass_update.xml',
 
 
     ],

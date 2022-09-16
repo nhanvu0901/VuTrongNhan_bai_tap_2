@@ -1,12 +1,11 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
-
-from datetime import date, datetime
+from odoo.exceptions import ValidationError, AccessError
 
 
-class Product(models.Model):
-    _inherit = 'product.template'
 
+
+class MassUpdate(models.TransientModel):
+    _name = 'mass.update.wizard'
     product_warranty = fields.Text(string='Product Warranty Code')
     Date_to = fields.Date(string='Date Start Warranty')
     Date_from = fields.Date(string='Date Stop Warranty')
@@ -58,32 +57,17 @@ class Product(models.Model):
                 self.product_warranty = "PWR" + "/" + date_to + "/0"
             else:
                 self.product_warranty = "PWR" + "0/0"
-    def write(self, value):
-        user_pool = self.env['res.users']
-        user = user_pool.browse(self._uid)
-        advance_gr = user.has_group('test2.group_adavance_sale')
 
-        if not advance_gr:
-            if value.get('Date_to') or value.get('Date_from'):
-                raise ValidationError(_("The field Warranty Code on ly editable by the Advance Sale"))
-
-        else:
-             return super(Product, self).write(value)
-
-    @api.constrains('Date_to', 'Date_from')
-    def _constrains_reconcile(self):
-        for record in self:
-            if record.Date_to > record.Date_from:
-                raise ValidationError(_("Date Start Warranty must earlier than Date Stop Warranty"))
+    def action_confirm(self):
+        for rec in self:
+            selected_ids = rec.env.context.get('active_ids', [])# get the  selected field
+            selected_records = rec.env['product.template'].browse(selected_ids)
+            if rec.product_warranty:
+                selected_records.product_warranty = rec.product_warranty
+                selected_records.Date_to = rec.Date_to
+                selected_records.Date_from = rec.Date_from
+            else:
+                raise ValidationError(_("No Update"))
 
 
-    def _display_product_discount_code(self):
-        today = fields.Date.today()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Product',
-            'res_model': 'product.template',
-            'domain': [('Date_to', '<=', today),('Date_from', '>=', today) ],
-            'view_mode': 'tree,form',
-            'target': 'current',
-        }
+

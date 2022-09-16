@@ -37,12 +37,31 @@
             <xpath expr="//filter[@name='activities_exception']" position="after">
                 <filter string="Code " name="creation_date_filter" domain="['&amp;',
                 ('Date_from', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
-                 ('Date_to', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))
+                 ('Date_to', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:59:59'))
                 ]"/>
             </xpath>
             </data>
         </field>
     </record>
+
+
+    <record id="action_create_appointments" model="ir.actions.server"> <!--to view the wizard in the action button-->
+            <field name="name">Mass Update</field>
+            <field name="model_id" ref="test2.model_product_template"/>
+            <field name="binding_model_id" ref="test2.model_product_template"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">
+                if record:
+                    action_values = env.ref('test2.action_create_product_code').sudo().read()[0]
+                    action_values.update({'context': env.context})
+                    action = action_values
+            </field>
+        </record>
+
+
+
+
 
     <record id='test2_product_action' model='ir.actions.act_window'><!--khai bao action -->
         <field name="name">Product Form</field>

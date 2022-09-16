@@ -26,8 +26,6 @@ class ProductSale(models.Model):
                 year_from = "20" + rec.product_warranty[15:17]
                 date_from = date(int(year_from), int(month_from), int(day_from))
 
-
-
                 if date_to < today < date_from:
                     rec.Sale_order_discount_estimated = 0
                     day_convert = str(date_from - today)
