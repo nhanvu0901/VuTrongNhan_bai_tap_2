@@ -58,6 +58,7 @@ class Product(models.Model):
                 self.product_warranty = "PWR" + "/" + date_to + "/0"
             else:
                 self.product_warranty = "PWR" + "0/0"
+
     def write(self, value):
         user_pool = self.env['res.users']
         user = user_pool.browse(self._uid)
@@ -65,10 +66,10 @@ class Product(models.Model):
 
         if not advance_gr:
             if value.get('Date_to') or value.get('Date_from'):
-                raise ValidationError(_("The field Warranty Code on ly editable by the Advance Sale"))
+                raise ValidationError(_("The field Warranty Code only editable by the Advance Sale"))
 
         else:
-             return super(Product, self).write(value)
+            return super(Product, self).write(value)
 
     @api.constrains('Date_to', 'Date_from')
     def _constrains_reconcile(self):
@@ -76,14 +77,31 @@ class Product(models.Model):
             if record.Date_to > record.Date_from:
                 raise ValidationError(_("Date Start Warranty must earlier than Date Stop Warranty"))
 
-
     def _display_product_discount_code(self):
         today = fields.Date.today()
         return {
             'type': 'ir.actions.act_window',
             'name': 'Product',
             'res_model': 'product.template',
-            'domain': [('Date_to', '<=', today),('Date_from', '>=', today) ],
+            'domain': [('Date_to', '<=', today), ('Date_from', '>=', today)],
             'view_mode': 'tree,form',
             'target': 'current',
         }
+
+    def _get_combination_info(self, combination=False, product_id=False, add_qty=1, pricelist=False,
+                              parent_combination=False, only_template=False):
+        combination_info = super(Product, self)._get_combination_info(
+            combination=combination,
+            product_id=product_id,
+            add_qty=add_qty,
+            pricelist=pricelist,
+            parent_combination=parent_combination,
+            only_template=only_template,
+        )
+
+
+        combination_info['product_warranty'] = self.product_warranty
+
+        return combination_info
+
+

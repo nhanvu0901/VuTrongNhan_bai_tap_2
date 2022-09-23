@@ -33,6 +33,7 @@
         'wizard/mass_update.xml',
 
 
+
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,3 +1,5 @@
+import json
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, AccessError
 from datetime import date
@@ -33,7 +35,7 @@ class ProductSale(models.Model):
                 else:
                     percent = 10
                     rec.Sale_order_discount_estimated = (rec.price_subtotal * percent) / 100
-                    rec.day_under_warranty =''
+                    rec.day_under_warranty = ''
 
 
             else:
@@ -56,8 +58,11 @@ class Sale(models.Model):
                 amount_tax += line.price_tax
                 amount_discount += line.Sale_order_discount_estimated
             rec.discount_total = amount_discount
+            amount_total = amount_untaxed + amount_tax - amount_discount
+
             rec.update({
                 'amount_untaxed': amount_untaxed,
                 'amount_tax': amount_tax,
-                'amount_total': amount_untaxed + amount_tax - rec.discount_total,
+                'amount_total': amount_total,
             })
+

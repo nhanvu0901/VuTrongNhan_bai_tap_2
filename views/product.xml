@@ -21,11 +21,25 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name ='standard_price']" position="after">
                  <field name="product_warranty" groups="test2.group_adavance_sale"/>
-                <field name="Date_to" groups="test2.group_adavance_sale"/>
-                <field name="Date_from" groups="test2.group_adavance_sale"/>
+                 <field name="Date_to" groups="test2.group_adavance_sale"/>
+                 <field name="Date_from" groups="test2.group_adavance_sale"/>
             </xpath>
         </field>
     </record>
+
+    <template id="products_warranty" inherit_id="website_sale.products_item" name="Product Warranty">
+            <xpath expr="//*[hasclass('product_price')]" position="after">
+                 <span  t-esc="combination_info['product_warranty']"/>
+            </xpath>
+    </template>
+
+    <template id="products_warranty_test" inherit_id="website_sale.product_price">
+        <xpath expr="//*[hasclass('css_editable_mode_hidden')]" position="after">
+
+            <span  t-esc="combination_info['product_warranty']"/>
+        </xpath>
+    </template>
+
 
   <record id="test2_product_template_search_view" model="ir.ui.view">
         <field name="name">Test2 Product Search</field>

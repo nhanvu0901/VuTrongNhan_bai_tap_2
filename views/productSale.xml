@@ -14,7 +14,7 @@
                  <xpath expr="//field[@name='order_line']/tree/field[@name='product_warranty']" position="after">
                     <field name="day_under_warranty"/>
                 </xpath>
-                 <xpath expr="//field[@name ='amount_tax']" position="after">
+                 <xpath expr="//field[@name ='tax_totals_json']" position="after">
                     <field name="discount_total" widget="monetary"/>
                 </xpath>
             </field>
