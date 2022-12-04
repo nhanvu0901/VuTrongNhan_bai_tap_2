@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="test2_product_view_form" model="ir.ui.view">
+        <field name="name">Product Form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/> <!--External ID cua view form-->
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name ='barcode']" position="after">
+                <field name="product_warranty" groups="test2.group_adavance_sale" />
+                <field name="Date_to" groups="test2.group_adavance_sale"/>
+                <field name="Date_from" groups="test2.group_adavance_sale"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="tes2_product_view_tree" model="ir.ui.view">
+        <field name="name">Product List</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name ='standard_price']" position="after">
+                 <field name="product_warranty" groups="test2.group_adavance_sale"/>
+                 <field name="Date_to" groups="test2.group_adavance_sale"/>
+                 <field name="Date_from" groups="test2.group_adavance_sale"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--    <template id="products_warranty" inherit_id="website_sale.products_item" name="Product Warranty">-->
+<!--            <xpath expr="//*[hasclass('product_price')]" position="after">-->
+<!--                 <span  t-esc="combination_info['product_warranty']"/>-->
+<!--            </xpath>-->
+<!--    </template>-->
+
+<!--    <template id="products_warranty_test" inherit_id="website_sale.product_price">-->
+<!--        <xpath expr="//*[hasclass('css_editable_mode_hidden')]" position="after">-->
+
+<!--            <span  t-esc="combination_info['product_warranty']"/>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+
+  <record id="test2_product_template_search_view" model="ir.ui.view">
+        <field name="name">Test2 Product Search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <data>
+            <xpath expr="//filter[@name='activities_exception']" position="after">
+                <filter string="Code " name="creation_date_filter" domain="['&amp;',
+                ('Date_from', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
+                 ('Date_to', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:59:59'))
+                ]"/>
+            </xpath>
+            </data>
+        </field>
+    </record>
+
+
+    <record id="action_create_appointments" model="ir.actions.server"> <!--to view the wizard in the action button-->
+            <field name="name">Mass Update</field>
+            <field name="model_id" ref="test2.model_product_template"/>
+            <field name="binding_model_id" ref="test2.model_product_template"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">
+                if record:
+                    action_values = env.ref('test2.action_create_product_code').sudo().read()[0]
+                    action_values.update({'context': env.context})
+                    action = action_values
+            </field>
+        </record>
+
+
+
+
+
+    <record id='test2_product_action' model='ir.actions.act_window'><!--khai bao action -->
+        <field name="name">Product Form</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="search_view_id" ref="test2.test2_product_template_search_view"/>
+    </record>
+    <menuitem name="Test2" id="menu_root"/>
+     <menuitem name="Product" id="product_root" parent="menu_root" action="test2_product_action"/>
+
+</odoo>
